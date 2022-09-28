@@ -1,7 +1,7 @@
 on: 
   push:
     branches:
-      - master
+      - main
 
 jobs:
   release-on-push:
@@ -11,4 +11,5 @@ jobs:
     steps:
       - uses: rymndhng/release-on-push-action@master
         with:
+          tag_prefix: ""
           bump_version_scheme: norelease

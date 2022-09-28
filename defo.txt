@@ -1,1 +1,17 @@
-hello
+{
+	"name": "ascott-analytical-chambers-test-standards",
+	"version": "2.3.2",
+	"main": "index.js",
+	"repository": "git@bitbucket.org:pieweb/ascott-analytical-chambers-test-standards.git",
+	"author": "Neil Pie <neil@neilpie.co.uk>",
+	"license": "MIT",
+	"dependencies": {
+		"lodash": "^4.17.4",
+		"vue": "^2.4.1"
+	},
+	"scripts": {
+		"deploy-dev": "rsync -avP ./* ascottdev@ascottdev.ssh.wpengine.net:~/sites/ascottdev/wp-content/plugins/ascott-analytical-chambers-test-standards",
+		"deploy-stg": "rsync -avP ./* ascottstg@ascottstg.ssh.wpengine.net:~/sites/ascottstg/wp-content/plugins/ascott-analytical-chambers-test-standards",
+		"deploy-prd": "rsync -avP ./* ascott@ascott.ssh.wpengine.net:~/sites/ascott/wp-content/plugins/ascott-analytical-chambers-test-standards"
+	}
+}
