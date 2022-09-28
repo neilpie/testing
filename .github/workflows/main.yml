@@ -11,12 +11,12 @@ jobs:
     steps:
       - id: prerelease
         uses: rymndhng/release-on-push-action@master
-        name: Pre-grab the version numbers
+        name: Check if we are running a new release
         with:
           tag_prefix: ""
           bump_version_scheme: norelease
           dry_run: true
-      - name: Bumping version numbers
+      - name: Bump version numbers
         if: steps.prerelease.outputs.version
         run: |
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
@@ -27,6 +27,7 @@ jobs:
           git push
       - uses: rymndhng/release-on-push-action@master
         name: Create the release
+        if: steps.prerelease.outputs.version
         with:
           tag_prefix: ""
           bump_version_scheme: norelease
