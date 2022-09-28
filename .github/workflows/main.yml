@@ -9,6 +9,8 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      -name:
+        run: echo "${{ toJson(github) }}"
       - id: prerelease
         uses: rymndhng/release-on-push-action@master
         name: Check if we are running a new release
@@ -24,6 +26,7 @@ jobs:
       - name: Bump the version numbers
         if: steps.prerelease.outputs.version
         run: |
+
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
           git checkout
           sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ steps.prerelease.outputs.version }}/g" ./defo.txt
@@ -31,12 +34,12 @@ jobs:
           git config user.name "Github Actions"
           git config user.email "<>"
           git add .
-          git commit --amend --no-edit
-          git push -f
-      - uses: rymndhng/release-on-push-action@master
-        name: Create the release
-        if: steps.prerelease.outputs.version
+          git commit
+          git push
+      
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
         with:
-          tag_prefix: ""
-          bump_version_scheme: norelease
-          use_github_release_notes: true
+          tag: ${{ steps.prerelease.outputs.version }}
+          name: ${{ steps.prerelease.outputs.version }}
+          body: ${{ steps.prerelease.outputs.body }}
