@@ -11,7 +11,6 @@
 	},
 	"scripts": {
 		"deploy-dev": "rsync -avP ./* ascottdev@ascottdev.ssh.wpengine.net:~/sites/ascottdev/wp-content/plugins/ascott-analytical-chambers-test-standards",
-		"deploy-stg": "rsync -avP ./* ascottstg@ascottstg.ssh.wpengine.net:~/sites/ascottstg/wp-content/plugins/ascott-analytical-chambers-test-standards",
-		"deploy-prd": "rsync -avP ./* ascott@ascott.ssh.wpengine.net:~/sites/ascott/wp-content/plugins/ascott-analytical-chambers-test-standards"
+		"deploy-stg": "rsync -avP ./* ascottstg@ascottstg.ssh.wpengine.net:~/sites/ascottstg/wp-content/plugins/ascott-analytical-chambers-test-standards"
 	}
 }
