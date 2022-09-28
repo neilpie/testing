@@ -18,8 +18,10 @@ jobs:
           dry_run: true
       - name: Bump version numbers
         if: steps.prerelease.outputs.version
+        uses: actions/checkout@v3
         run: |
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
+          git checkout
           sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ steps.prerelease.outputs.version }}/g" ./defo.txt
           sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ steps.prerelease.outputs.version }}/g" ./pie.txt
           git commit -am "bumping version numbers"
