@@ -24,7 +24,6 @@ jobs:
       - name: Bump the version numbers
         if: steps.prerelease.outputs.version
         run: |
-          echo "${{ toJSON(github) }}"
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
           git checkout
           sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ steps.prerelease.outputs.version }}/g" ./defo.txt
