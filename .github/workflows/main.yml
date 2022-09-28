@@ -9,7 +9,23 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - id: prerelease
+        uses: rymndhng/release-on-push-action@master
+        name: Pre-grab the version numbers
+        with:
+          tag_prefix: ""
+          bump_version_scheme: norelease
+          dry_run: true
+      - name: Bumping version numbers
+        run: |
+          echo "Creating release version ${{ steps.prerelease.outputs.version }}"
+          gh pr checkout ${{ github.event.pull_request.number }}
+          sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ steps.prerelease.outputs.version }}/g" ./defo.txt
+          sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ steps.prerelease.outputs.version }}/g" ./pie.txt
+          git commit -am "bumping version numbers"
+          git push
       - uses: rymndhng/release-on-push-action@master
+        name: Create the release
         with:
           tag_prefix: ""
           bump_version_scheme: norelease
