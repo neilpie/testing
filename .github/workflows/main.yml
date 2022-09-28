@@ -31,8 +31,9 @@ jobs:
           sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ steps.prerelease.outputs.version }}/g" ./pie.txt
           git config user.name "Github Actions"
           git config user.email "<>"
-          git commit -am "bumping version numbers"
-          git push
+          git add .
+          git commit --amend --no-edit
+          git push -f
       - uses: rymndhng/release-on-push-action@master
         name: Create the release
         if: steps.prerelease.outputs.version
