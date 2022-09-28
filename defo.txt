@@ -1,6 +1,6 @@
 {
 	"name": "ascott-analytical-chambers-test-standards",
-	"version": "4.0.0",
+	"version": "5.0.0",
 	"main": "index.js",
 	"repository": "git@bitbucket.org:pieweb/ascott-analytical-chambers-test-standards.git",
 	"author": "Neil Pie <neil@neilpie.co.uk>",
