@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.prerelease.outputs.version }}
+      release_body: ${{ steps.prerelease.outputs.body }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -18,6 +19,7 @@ jobs:
           tag_prefix: ""
           bump_version_scheme: norelease
           dry_run: true
+          use_github_release_notes: true
   
   create_release:
     runs-on: ubuntu-latest
@@ -45,4 +47,4 @@ jobs:
         with:
           tag: ${{ jobs.check_for_release.outputs.version }}
           name: ${{ jobs.check_for_release.outputs.version }}
-          body: ${{ jobs.check_for_release.outputs.version }}
+          body: ${{ jobs.check_for_release.outputs.release_body }}
