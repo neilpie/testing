@@ -12,3 +12,4 @@ jobs:
       - uses: rymndhng/release-on-push-action@master
         with:
           tag_prefix: ""
+          bump_version_scheme: norelease
