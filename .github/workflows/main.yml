@@ -4,8 +4,10 @@ on:
       - main
 
 jobs:
-  release-on-push:
+  check_for_release:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.prerelease.outputs.version }}
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -16,18 +18,22 @@ jobs:
           tag_prefix: ""
           bump_version_scheme: norelease
           dry_run: true
-
+  
+  create_release:
+    runs-on: ubuntu-latest
+    if: jobs.check_for_release.outputs.version
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   
+    steps:
       - name: Check out the repo
-        if: steps.prerelease.outputs.version
         uses: actions/checkout@v3
 
       - name: Bump the version numbers
-        if: steps.prerelease.outputs.version
         run: |
-          echo "Creating release version ${{ steps.prerelease.outputs.version }}"
+          echo "Creating release version ${{ jobs.check_for_release.outputs.version }}"
           git checkout
-          sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ steps.prerelease.outputs.version }}/g" ./defo.txt
-          sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ steps.prerelease.outputs.version }}/g" ./pie.txt
+          sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ jobs.check_for_release.outputs.version }}/g" ./defo.txt
+          sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ jobs.check_for_release.outputs.version }}/g" ./pie.txt
           git config user.name "Github Actions"
           git config user.email "<>"
           git add .
@@ -35,9 +41,8 @@ jobs:
           git push
       
       - name: Create a GitHub release
-        if: steps.prerelease.outputs.version
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.prerelease.outputs.version }}
-          name: ${{ steps.prerelease.outputs.version }}
-          body: ${{ steps.prerelease.outputs.body }}
+          tag: ${{ jobs.check_for_release.outputs.version }}
+          name: ${{ jobs.check_for_release.outputs.version }}
+          body: ${{ jobs.check_for_release.outputs.version }}
