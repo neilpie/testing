@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   check_for_release:
     runs-on: ubuntu-latest
@@ -22,8 +21,9 @@ jobs:
           use_github_release_notes: true
   
   create_release:
+    needs: check_for_release
     runs-on: ubuntu-latest
-    if: jobs.check_for_release.outputs.version
+    if: needs.check_for_release.outputs.version
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   
     steps:
@@ -32,10 +32,10 @@ jobs:
 
       - name: Bump the version numbers
         run: |
-          echo "Creating release version ${{ jobs.check_for_release.outputs.version }}"
+          echo "Creating release version ${{ needs.check_for_release.outputs.version }}"
           git checkout
-          sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ jobs.check_for_release.outputs.version }}/g" ./defo.txt
-          sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ jobs.check_for_release.outputs.version }}/g" ./pie.txt
+          sed -i "s/version\":\ \"[0-9]\+\.\?[0-9]*\.\?[0-9]*/version\":\ \"${{ needs.check_for_release.outputs.version }}/g" ./defo.txt
+          sed -i "s/Version:\ [0-9]\+\.\?[0-9]*\.\?[0-9]*/Version:\ ${{ needs.check_for_release.outputs.version }}/g" ./pie.txt
           git config user.name "Github Actions"
           git config user.email "<>"
           git add .
@@ -45,6 +45,6 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ jobs.check_for_release.outputs.version }}
-          name: ${{ jobs.check_for_release.outputs.version }}
-          body: ${{ jobs.check_for_release.outputs.release_body }}
+          tag: ${{ needs.check_for_release.outputs.version }}
+          name: ${{ needs.check_for_release.outputs.version }}
+          body: ${{ needs.check_for_release.outputs.release_body }}
