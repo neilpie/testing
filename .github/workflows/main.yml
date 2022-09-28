@@ -16,9 +16,11 @@ jobs:
           tag_prefix: ""
           bump_version_scheme: norelease
           dry_run: true
-      - name: Bump version numbers
+      - name: Check out the repo
         if: steps.prerelease.outputs.version
         uses: actions/checkout@v3
+      - name: Bump the version numbers
+        if: steps.prerelease.outputs.version
         run: |
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
           git checkout
