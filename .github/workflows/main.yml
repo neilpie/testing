@@ -9,8 +9,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name:
-        run: echo "${{ toJson(github) }}"
       - id: prerelease
         uses: rymndhng/release-on-push-action@master
         name: Check if we are running a new release
