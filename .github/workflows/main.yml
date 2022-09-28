@@ -17,6 +17,7 @@ jobs:
           bump_version_scheme: norelease
           dry_run: true
       - name: Bumping version numbers
+        if: steps.prerelease.outputs.version
         run: |
           echo "Creating release version ${{ steps.prerelease.outputs.version }}"
           gh pr checkout ${{ github.event.pull_request.number }}
