@@ -1,6 +1,0 @@
-hello
-
-Version: 5.0.0
-Or so it would seem
-
-Version: 1.0
