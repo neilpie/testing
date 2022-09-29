@@ -8,3 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added 
 - Initial functionality pre-changelog
+- Adding a bit more
+### Changed
+- moved txt files to appropriately named files
